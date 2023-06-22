@@ -36,22 +36,71 @@ const ReplyCard = ({ reply, commentId }) => {
 
   return (
     <>
-      <div className="bg-white self-end flex max-w-3xl p-6 rounded-xl gap-6 w-[90%]">
+      <div className="bg-white self-end flex max-w-3xl p-6 md:p-5 md:w-[96%] rounded-xl gap-6 w-[90%]  md:flex-col-reverse">
         <>
           {/* Counter */}
-          <div className="grid p-3 self-start rounded-lg text-center bg-neutralLightGray gap-4">
-            <button className="pl-[5px] w-5 h-5" onClick={replyIncrementScore}>
-              <img srcSet={require("../assets/icon-plus.svg").default} alt="" />
-            </button>
-            <p className="text-primaryModerateBlue text-md font-medium">
-              {reply.score}
-            </p>
-            <button className="pl-[5px] w-5 h-5" onClick={replyDecrementScore}>
-              <img
-                srcSet={require("../assets/icon-minus.svg").default}
-                alt=""
-              />
-            </button>
+          <div className="flex justify-between">
+            <div className="grid p-3 self-start md:flex rounded-lg text-center bg-neutralLightGray gap-4">
+              <button
+                className="pl-[5px] w-5 h-5"
+                onClick={replyIncrementScore}
+              >
+                <img
+                  srcSet={require("../assets/icon-plus.svg").default}
+                  alt=""
+                />
+              </button>
+              <p className="text-primaryModerateBlue text-md font-medium">
+                {reply.score}
+              </p>
+              <button
+                className="pl-[5px] w-5 h-5"
+                onClick={replyDecrementScore}
+              >
+                <img
+                  srcSet={require("../assets/icon-minus.svg").default}
+                  alt=""
+                />
+              </button>
+            </div>
+            {isCurrentUser ? (
+              <div className="hidden md:flex gap-6">
+                <button
+                  className="flex items-center gap-2"
+                  onClick={() => setIsOpen(true)}
+                >
+                  <img
+                    src={require("../assets/icon-delete.svg").default}
+                    alt=""
+                    className="h-4 w-4"
+                  />{" "}
+                  <p className="text-primarySoftRed font-bold">Delete</p>
+                </button>
+                <button
+                  className="flex items-center gap-2"
+                  onClick={() => setIsEditing(!isEditing)}
+                >
+                  <img
+                    src={require("../assets/icon-edit.svg").default}
+                    alt=""
+                    className="h-4 w-4"
+                  />{" "}
+                  <p className="text-primaryModerateBlue font-bold">Edit</p>
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsReplying(!isReplying)}
+                className="hidden items-center gap-2  md:flex "
+              >
+                <img
+                  src={require("../assets/icon-reply.svg").default}
+                  alt=""
+                  className="h-4 w-4"
+                />{" "}
+                <p className="text-primaryModerateBlue font-bold">Reply</p>
+              </button>
+            )}
           </div>
 
           {/* Comment Part */}
@@ -82,7 +131,7 @@ const ReplyCard = ({ reply, commentId }) => {
               <div>
                 {/* Implement Current User Interface */}
                 {isCurrentUser ? (
-                  <div className="flex gap-6">
+                  <div className="flex gap-6 md:hidden">
                     <button
                       className="flex items-center gap-2"
                       onClick={() => setIsOpen(true)}
@@ -109,7 +158,7 @@ const ReplyCard = ({ reply, commentId }) => {
                 ) : (
                   <button
                     onClick={() => setIsReplying(!isReplying)}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 md:hidden "
                   >
                     <img
                       src={require("../assets/icon-reply.svg").default}

@@ -16,7 +16,7 @@ const DeleteComment = ({ isOpen, replyid, commentid }) => {
 
   return (
     <div
-      className="w-[100vw] h-[120vh] top-0 flex fixed justify-center items-center -left-0"
+      className="w-[100vw] h-[120vh] z-10 top-0 flex fixed justify-center items-center -left-0"
       style={{ backgroundColor: "rgb(0,0,0,0.5)" }}
     >
       <div className="bg-white p-8 rounded-lg w-96 grid gap-4 ">
