@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { dataActions } from "../context/dataSlice";
 import DeleteComment from "./DeleteComment";
+import AddReply from "./AddReply";
 
 const ReplyCard = ({ reply, commentId }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState(reply.content);
   const [isOpen, setIsOpen] = useState(false);
+  const [isReplying, setIsReplying] = useState(false);
   const currentUser = useSelector((state) => state.data.currentUser);
   const isCurrentUser = currentUser.username === reply.user.username;
   const dispatch = useDispatch();
@@ -20,7 +22,6 @@ const ReplyCard = ({ reply, commentId }) => {
       dataActions.replyDecrement({ replyId: reply.id, commentId: commentId })
     );
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(
@@ -79,6 +80,7 @@ const ReplyCard = ({ reply, commentId }) => {
               </div>
 
               <div>
+                {/* Implement Current User Interface */}
                 {isCurrentUser ? (
                   <div className="flex gap-6">
                     <button
@@ -105,7 +107,10 @@ const ReplyCard = ({ reply, commentId }) => {
                     </button>
                   </div>
                 ) : (
-                  <button className="flex items-center gap-2">
+                  <button
+                    onClick={() => setIsReplying(!isReplying)}
+                    className="flex items-center gap-2"
+                  >
                     <img
                       src={require("../assets/icon-reply.svg").default}
                       alt=""
@@ -116,11 +121,11 @@ const ReplyCard = ({ reply, commentId }) => {
                 )}
               </div>
             </div>
-
+            {/* Implement Editing Interface 'Update' */}
             {isEditing ? (
               <form
                 onSubmit={handleSubmit}
-                className="bg-white grid justify-between max-w-3xl p-6 rounded-xl gap-6"
+                className="bg-white grid justify-between max-w-3xl pt-2 rounded-xl gap-6"
               >
                 <textarea
                   value={inputValue}
@@ -131,7 +136,7 @@ const ReplyCard = ({ reply, commentId }) => {
                   placeholder="Add a comment..."
                   cols="2000"
                 />
-                <button className="bg-primaryModerateBlue justify-self-end text-neutralWhite self-start px-3 py-2 rounded-md">
+                <button className="bg-primaryModerateBlue uppercase justify-self-end text-neutralWhite self-start px-3 py-2 rounded-md">
                   Update
                 </button>
               </form>
@@ -145,7 +150,7 @@ const ReplyCard = ({ reply, commentId }) => {
             )}
           </div>
         </>
-
+        {/* Delete Alert */}
         {isOpen ? (
           <DeleteComment
             replyid={reply.id}
@@ -157,7 +162,19 @@ const ReplyCard = ({ reply, commentId }) => {
         )}
       </div>
       {/* implement replyCard */}
-      <div></div>
+
+      {isReplying ? (
+        <div className="w-[90%]">
+          <AddReply
+            commentId={commentId}
+            replyId={reply.id}
+            isReplying={setIsReplying}
+            isComment={false}
+          />
+        </div>
+      ) : (
+        ""
+      )}
     </>
   );
 };

@@ -4,8 +4,11 @@ import AddReply from "./AddReply";
 import { useDispatch, useSelector } from "react-redux";
 import { dataActions } from "../context/dataSlice";
 const CommentCard = ({ comment }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const dispatch = useDispatch();
   const data = useSelector((state) => state.data);
+  const isCurrentUser = data.currentUser.username === comment.user.username;
 
   const incrementScore = () => {
     dispatch(dataActions.increment(comment.id));
@@ -20,7 +23,7 @@ const CommentCard = ({ comment }) => {
 
   return (
     <div className="grid" style={{ justifyItems: "end" }}>
-      <div className="bg-white flex max-w-3xl p-6 rounded-xl gap-6">
+      <div className="bg-white flex max-w-3xl p-6 rounded-xl gap-6 w-[100%]">
         {/* Counter */}
         <div className="grid p-3 self-start rounded-lg text-center bg-neutralLightGray gap-4">
           <button className="pl-[5px] w-5 h-5" onClick={incrementScore}>
@@ -34,7 +37,7 @@ const CommentCard = ({ comment }) => {
           </button>
         </div>
         {/* Comment Components */}
-        <div className="grid gap-2">
+        <div className="grid gap-2 items-start w-full">
           <div className="flex items-center justify-between gap-4">
             <div className="flex gap-4 items-center">
               <img
@@ -46,6 +49,13 @@ const CommentCard = ({ comment }) => {
                 )}
               />
               <p className="font-medium">{comment.user.username}</p>
+              {isCurrentUser ? (
+                <div className="bg-primaryModerateBlue text-xs text-neutralWhite px-2 py-1 rounded-sm">
+                  you
+                </div>
+              ) : (
+                ""
+              )}
               <p className="text-neutralGrayishBlue">{comment.createdAt}</p>
             </div>
             <div>
@@ -66,7 +76,7 @@ const CommentCard = ({ comment }) => {
         </div>
       </div>
       <div
-        className="flex flex-col items-end gap-2 w-[100%]"
+        className="flex flex-col items-end gap-4 w-[100%]"
         style={{ marginTop: comment.replies.length === 0 ? "0px" : "16px" }}
       >
         {comment.replies.map((reply) => (
@@ -74,11 +84,13 @@ const CommentCard = ({ comment }) => {
         ))}
       </div>
       {isReplying ? (
-        <AddReply
-          commentId={comment.id}
-          comment={comment}
-          isReplying={setIsReplying}
-        />
+        <div className="mt-4">
+          <AddReply
+            commentId={comment.id}
+            isComment={true}
+            isReplying={setIsReplying}
+          />
+        </div>
       ) : (
         ""
       )}

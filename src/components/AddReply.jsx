@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { dataActions } from "../context/dataSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-const AddReply = ({ commentId, isReplying, comment }) => {
+const AddReply = ({ commentId, isReplying, isComment, replyId }) => {
   const dispatch = useDispatch();
 
   const currentUserImage = useSelector(
@@ -12,7 +12,12 @@ const AddReply = ({ commentId, isReplying, comment }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(
-      dataActions.addReply({ commentId: commentId, content: inputValue })
+      dataActions.replyToComment({
+        commentId: commentId,
+        replyId: replyId,
+        content: inputValue,
+        isComment: isComment,
+      })
     );
     setInputValue("");
     isReplying(false);
@@ -20,7 +25,7 @@ const AddReply = ({ commentId, isReplying, comment }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white flex justify-between max-w-3xl p-6 mt-4 rounded-xl gap-6"
+      className="bg-white flex justify-between max-w-3xl p-6  rounded-xl gap-6"
     >
       <img
         src={require("../assets/avatars/" + currentUserImage)}
@@ -32,11 +37,11 @@ const AddReply = ({ commentId, isReplying, comment }) => {
         required
         style={{ resize: "none" }}
         className="w-full p-2 rounded-lg border-[1px] h-20"
-        placeholder="Add a comment..."
+        placeholder="Add a reply..."
         cols="2000"
       />
-      <button className="bg-primaryModerateBlue text-neutralWhite self-start px-3 py-2 rounded-md">
-        Send
+      <button className="bg-primaryModerateBlue text-neutralWhite uppercase self-start px-3 py-2 rounded-md">
+        Reply
       </button>
     </form>
   );
