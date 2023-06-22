@@ -1,21 +1,23 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 import data from "../data.json";
 
-// const currentData = JSON.parse(localStorage.getItem("data"));
-// const returnCurrentData = () => {
-//   if (currentData) {
-//     console.log(currentData);
-//     return data;
-//   } else {
-//     return currentData;
-//   }
-// };
+const returnCurrentData = () => {
+  const currentData = JSON.parse(localStorage.getItem("data"));
+  if (currentData) {
+    return currentData;
+  } else {
+    return data;
+  }
+};
 
 export const dataSlice = createSlice({
   name: "data",
-  initialState: data,
+  initialState: returnCurrentData,
 
   reducers: {
+    resetData: (state, action) => {
+      return state;
+    },
     // Comment Section functions
     increment: (state, action) => {
       const id = action.payload;

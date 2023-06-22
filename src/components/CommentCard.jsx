@@ -12,11 +12,9 @@ const CommentCard = ({ comment }) => {
 
   const incrementScore = () => {
     dispatch(dataActions.increment(comment.id));
-    localStorage.setItem("data", JSON.stringify(data));
   };
-  const DecrementScore = async () => {
-    await dispatch(dataActions.decrement(comment.id));
-    await localStorage.setItem("data", JSON.stringify(data));
+  const DecrementScore = () => {
+    dispatch(dataActions.decrement(comment.id));
   };
 
   const [isReplying, setIsReplying] = useState(false);

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import CommentCard from "./components/CommentCard";
 import { useDispatch, useSelector } from "react-redux";
 import { dataActions } from "./context/dataSlice";
+import oldData from "./data.json";
 
 function App() {
   const comments = useSelector((state) => state.data.comments);
@@ -10,20 +11,31 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem("data", JSON.stringify(data));
-  }, [dispatch]);
+  }, [data]);
 
   const currentUserImage = useSelector(
     (state) => state.data.currentUser.image.png
   );
   const [inputValue, setInputValue] = useState();
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(dataActions.addComment(inputValue));
+    await dispatch(dataActions.addComment(inputValue));
     setInputValue("");
   };
 
   return (
     <main className="grid items-center justify-center py-20 gap-4 px-5">
+      <button
+        onClick={() => {
+          console.log(oldData);
+          dispatch(dataActions.resetData(oldData));
+          localStorage.setItem("data", JSON.stringify(oldData));
+        }}
+        className="bg-primarySoftRed self-start p-4 text-white font-medium rounded-lg text-xl"
+        type="button"
+      >
+        Reset Data
+      </button>
       {comments.map((comment) => (
         <CommentCard comment={comment} key={comment.id} />
       ))}
