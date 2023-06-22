@@ -25,17 +25,22 @@ function App() {
 
   return (
     <main className="grid items-center justify-center py-20 gap-4 px-5">
-      <button
-        onClick={() => {
-          console.log(oldData);
-          dispatch(dataActions.resetData(oldData));
-          localStorage.setItem("data", JSON.stringify(oldData));
-        }}
-        className="bg-primarySoftRed self-start p-4 text-white font-medium rounded-lg text-xl"
-        type="button"
-      >
-        Reset Data
-      </button>
+      <div className=" flex items-center justify-center gap-2">
+        <button
+          onClick={() => {
+            console.log(oldData);
+            dispatch(dataActions.resetData(oldData));
+            localStorage.setItem("data", JSON.stringify(oldData));
+          }}
+          className="bg-primarySoftRed self-start p-4  text-white font-medium rounded-lg text-xl"
+          type="button"
+        >
+          Reset Data
+        </button>
+        <p className="text-neutralGrayishBlue">
+          Click the button then refresh the page to reset data.
+        </p>
+      </div>
       {comments.map((comment) => (
         <CommentCard comment={comment} key={comment.id} />
       ))}
